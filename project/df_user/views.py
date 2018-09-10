@@ -84,6 +84,7 @@ def login_handle(request):
 def info(request):
     user = UserInfo.objects.get(id=request.session['user_id'])
     context = {
+        'page_name': 1,
         'title': '用户中心',
         'user': user
     }
@@ -92,6 +93,7 @@ def info(request):
 
 def order(request):
     context = {
+        'page_name': 1,
         'title': '订单中心'
     }
     return render(request, 'df_user/user_center_order.html', context)
@@ -107,6 +109,7 @@ def site(request):
         user.uphone = post.get('uphone')
         user.save()
     context = {
+        'page_name': 1,
         'title': '收货中心',
         'user': user
     }

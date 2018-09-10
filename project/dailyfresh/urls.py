@@ -16,7 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import re_path, include
 
+
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
-    re_path(r'^user/', include('df_user.urls'))
+    re_path(r'^', include('df_goods.urls')),
+    re_path(r'^user/', include('df_user.urls')),
+    re_path(r'^tinymce/', include('df_user.urls')),
+    re_path(r'^user/', include('df_goods.urls')),
 ]
