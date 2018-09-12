@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -31,5 +32,35 @@ def index(request):
 def list1(request, tid, pindex, sort):
     typeinfo = TypeInfo.objects.get(pk=int(tid))
     news = typeinfo.goodsinfo_set.order_by('-id')[0:2]
-    if sort == '1':
-        goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order
+    if sort == '1': # 默认最新
+        goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-id')
+    if sort == '2': # 价格
+        goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gprice')
+    if sort == '3': # 人气,点击量
+        goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gclick')
+    paginator = Paginator(goods_list, 10)
+    page = paginator.page(int(pindex))
+    context = {
+        'title': typeinfo.title, 'guest_cart': 1,
+        'page': page,
+        'paginator': paginator,
+        'typeinfo': typeinfo,
+        'sort': sort,
+        'news': news
+    }
+
+    return render(request, 'df_goods/list.html', context)
+
+
+def detail(request, tid):
+    goodsinfo = GoodsInfo.objects.get(pk=int(tid))
+    news = goodsinfo.gtype.goodsinfo_set.order_by('-id')[0:2]
+    title = goodsinfo.gtype.title
+    context = {
+        'title': title,
+        'goodsinfo': goodsinfo,
+        'guest_cart': 1,
+        'news': news,
+        'id': tid,
+    }
+    return render(request, 'df_goods/detail.html', context)
