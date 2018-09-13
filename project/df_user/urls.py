@@ -10,8 +10,6 @@ urlpatterns = [
     re_path(r'^info', views.info),
     re_path(r'^order', views.order),
     re_path(r'^site', views.site),
-
-
-
+    re_path(r'^logout', views.logout),
 
 ]

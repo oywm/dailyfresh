@@ -63,4 +63,22 @@ def detail(request, tid):
         'news': news,
         'id': tid,
     }
-    return render(request, 'df_goods/detail.html', context)
+    response = render(request, 'df_goods/detail.html', context)
+    goods_ids = request.COOKIES.get('goods_ids', '')
+    goods_id = str(goodsinfo.id)
+    if goods_ids != '':
+        goods_ids1 = goods_ids.split(',')
+        if goods_id in goods_ids1:
+            goods_ids1.remove(goods_id)
+        goods_ids1.insert(0, goods_id)
+        if len(goods_ids1) >= 6:
+            del goods_ids1[5]
+        goods_ids = ','.join(goods_ids1)
+
+    else:
+        goods_ids = goods_id
+    print(goods_id)
+    response.set_cookie('goods_ids', goods_ids)
+
+    return response
+
