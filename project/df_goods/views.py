@@ -17,7 +17,9 @@ def index(request):
     type41 = typelist[4].goodsinfo_set.order_by('-gclick')[0:4]
     type5 = typelist[5].goodsinfo_set.order_by('-id')[0:4]
     type51 = typelist[5].goodsinfo_set.order_by('-gclick')[0:4]
+    carts_num = request.session['carts_num']
     context = {
+        'carts_num': carts_num,
         'title': '首页', 'guest_cart': 1,
         'type0': type0, 'type01': type01,
         'type1': type1, 'type11': type11,
@@ -40,7 +42,9 @@ def list1(request, tid, pindex, sort):
         goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gclick')
     paginator = Paginator(goods_list, 10)
     page = paginator.page(int(pindex))
+    carts_num = request.session['carts_num']
     context = {
+        'carts_num': carts_num,
         'title': typeinfo.title, 'guest_cart': 1,
         'page': page,
         'paginator': paginator,
@@ -56,7 +60,9 @@ def detail(request, tid):
     goodsinfo = GoodsInfo.objects.get(pk=int(tid))
     news = goodsinfo.gtype.goodsinfo_set.order_by('-id')[0:2]
     title = goodsinfo.gtype.title
+    carts_num = request.session['carts_num']
     context = {
+        'carts_num': carts_num,
         'title': title,
         'goodsinfo': goodsinfo,
         'guest_cart': 1,
@@ -77,7 +83,6 @@ def detail(request, tid):
 
     else:
         goods_ids = goods_id
-    print(goods_id)
     response.set_cookie('goods_ids', goods_ids)
 
     return response

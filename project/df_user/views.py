@@ -5,6 +5,7 @@ from hashlib import sha1
 from .models import *
 from . import user_decorator
 from df_goods.models import *
+from df_cart.models import *
 
 
 def register(request):
@@ -71,6 +72,9 @@ def login_handle(request):
             else:
                 red.set_cookie('uname', '', max_age=-1)
 
+            carts = CartInfo.objects.filter(user_id=users[0].id)
+            carts_num = len(carts)
+            request.session['carts_num'] = carts_num
             request.session['user_id'] = users[0].id
             request.session['user_name'] = uname
             return red

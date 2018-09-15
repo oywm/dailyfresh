@@ -77,7 +77,7 @@
 </div>
 	<div class="add_jump"></div>
 
-	<script type="text/javascript" src="js/jquery-1.12.2.js"></script>
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript">
 		var $add_x = $('#add_cart').offset().top;
 		var $add_y = $('#add_cart').offset().left;
@@ -87,13 +87,24 @@
 
 		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
 		$('#add_cart').click(function(){
+		    if($('.login_btn').text().indexOf('登录')>=0){
+		        alert('请先登录后再添加');
+		        location.href='/user/login/';
+		        return;
+
+		    }
+
 			$(".add_jump").stop().animate({
 				'left': $to_y+7,
 				'top': $to_x+7},
 				"fast", function() {
-					$(".add_jump").fadeOut('fast',function(){
-						$('#show_count').html(2);
-					});
+					$(".add_jump").fadeOut('fast',function(){});
+
+			});
+
+			num = parseInt($('.num_show').val());
+			$.get('/cart/add{{goodsinfo.id}}_'+num+'/',function(data){
+			    $('#show_count').text(data.count);
 
 			});
 		})

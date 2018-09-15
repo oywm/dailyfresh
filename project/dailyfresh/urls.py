@@ -23,4 +23,5 @@ urlpatterns = [
     re_path(r'^user/', include('df_user.urls')),
     re_path(r'^tinymce/', include('df_user.urls')),
     re_path(r'^user/', include('df_goods.urls')),
+    re_path(r'^cart/', include('df_cart.urls')),
 ]
